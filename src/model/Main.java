@@ -20,7 +20,6 @@ public class Main {
             GameController gameController = new GameController(jogador1, jogador2, gameView);
 
             gameController.iniciarJogo();
-            gameView.closeScanner();
         }
     }
 }

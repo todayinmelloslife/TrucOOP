@@ -21,36 +21,28 @@ public class GameController {
         view.exibirMensagem("1 - Fácil (manilhas visíveis)");
         view.exibirMensagem("2 - Difícil (manilhas ocultas)");
 
-        int escolha;
+        int escolha = obterEscolhaDoModo();
+        return escolha == 1;
+    }
+
+    private int obterEscolhaDoModo() {
         while (true) {
             try {
                 view.exibirMensagem("Digite o número do modo: ");
-                escolha = Integer.parseInt(view.getScanner().nextLine()); // Reutiliza o Scanner do GameView
+                int escolha = Integer.parseInt(view.getScanner().nextLine());
                 if (escolha == 1 || escolha == 2) {
-                    break;
+                    return escolha;
                 }
             } catch (NumberFormatException e) {
                 view.exibirMensagem("Entrada inválida. Digite um número.");
             }
             view.exibirMensagem("Escolha inválida. Tente novamente.");
         }
-        return escolha == 1;
     }
 
     public void iniciarJogo() {
-        baralho.embaralhar();
-        baralho.definirVira();
-
-        view.exibirMensagem("A carta virada é: " + baralho.getVira());
-        if (modoFacil) {
-            view.exibirMensagem("As manilhas são: " + baralho.getManilhas() + "\n");
-        }
-
-        for (int i = 0; i < 3; i++) {
-            jogador1.receberCarta(baralho.distribuirCarta());
-            jogador2.receberCarta(baralho.distribuirCarta());
-        }
-
+        prepararBaralho();
+        distribuirCartas();
         view.exibirMensagem("Cartas distribuídas!\n");
         mostrarCartasDosJogadores();
 
@@ -59,6 +51,22 @@ public class GameController {
         }
 
         exibirResultadoFinal();
+    }
+
+    private void prepararBaralho() {
+        baralho.embaralhar();
+        baralho.definirVira();
+        view.exibirMensagem("A carta virada é: " + baralho.getVira());
+        if (modoFacil) {
+            view.exibirMensagem("As manilhas são: " + baralho.getManilhas() + "\n");
+        }
+    }
+
+    private void distribuirCartas() {
+        for (int i = 0; i < 3; i++) {
+            jogador1.receberCarta(baralho.distribuirCarta());
+            jogador2.receberCarta(baralho.distribuirCarta());
+        }
     }
 
     private void mostrarCartasDosJogadores() {

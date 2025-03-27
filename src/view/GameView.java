@@ -45,7 +45,7 @@ public class GameView {
     public boolean respostaSimNao() {
         String resposta;
         while (true) {
-            resposta = scanner.next().toLowerCase();
+            resposta = scanner.nextLine().trim().toLowerCase(); // Usar nextLine() para evitar problemas de leitura
             if (resposta.equals("s")) {
                 return true;
             } else if (resposta.equals("n")) {
