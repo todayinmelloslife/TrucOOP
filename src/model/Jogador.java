@@ -35,4 +35,9 @@ public class Jogador {
     public String getNome() {
         return nome;
     }
+
+    public Carta jogarCarta(Carta escolherCarta) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'jogarCarta'");
+    }
 }

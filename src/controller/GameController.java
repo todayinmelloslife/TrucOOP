@@ -1,4 +1,3 @@
-
 import java.util.List;
 
 public class GameController {
@@ -43,9 +42,11 @@ public class GameController {
     }
 
     public void jogarRodada() {
-        // Cada jogador joga a carta da posição 0
-        Carta carta1 = jogador1.jogarCarta(0);
-        Carta carta2 = jogador2.jogarCarta(0);
+        view.exibirMensagem(jogador1.getNome() + ", escolha a carta para jogar:");
+        Carta carta1 = jogador1.jogarCarta(escolherCarta(jogador1.getMao()));
+
+        view.exibirMensagem(jogador2.getNome() + ", escolha a carta para jogar:");
+        Carta carta2 = jogador2.jogarCarta(escolherCarta(jogador2.getMao()));
 
         view.exibirMensagem(jogador1.getNome() + " jogou: " + carta1);
         view.exibirMensagem(jogador2.getNome() + " jogou: " + carta2);
@@ -74,5 +75,9 @@ public class GameController {
         int valor2 = ordem.indexOf(c2.getValor());
 
         return Integer.compare(valor1, valor2);
+    }
+
+    private Carta escolherCarta(List<Carta> mao) {
+        return view.escolherCarta(mao);
     }
 }
