@@ -22,10 +22,14 @@ public class GameView {
 
         int escolha;
         while (true) {
-            System.out.print("Digite o número da carta: ");
-            escolha = scanner.nextInt();
-            if (escolha > 0 && escolha <= mao.size()) {
-                break;
+            try {
+                System.out.print("Digite o número da carta: ");
+                escolha = Integer.parseInt(scanner.nextLine());
+                if (escolha > 0 && escolha <= mao.size()) {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                exibirMensagem("Entrada inválida. Digite um número.");
             }
             System.out.println("Escolha inválida. Tente novamente.");
         }
@@ -49,5 +53,9 @@ public class GameView {
             }
             exibirMensagem("Resposta inválida. Digite 's' para sim ou 'n' para não.");
         }
+    }
+
+    public void closeScanner() {
+        scanner.close();
     }
 }

@@ -49,20 +49,13 @@ public class Baralho {
     }
 
     public Carta distribuirCarta() {
-        if (!cartas.isEmpty()) {
-            return cartas.remove(0);
-        } else {
-            return null;
+        if (cartas.isEmpty()) {
+            throw new IllegalStateException("O baralho está vazio!");
         }
+        return cartas.remove(0);
     }
 
     public int tamanho() {
         return cartas.size();
-    }
-
-    public void mostrarBaralho() {
-        for (Carta carta : cartas) {
-            System.out.println(carta);
-        }
     }
 }

@@ -50,26 +50,25 @@ public class GameController {
         view.exibirMensagem("\n");
     }
 
-    public void jogarRodada() {
-        view.exibirMensagem(jogador1.getNome() + ", escolha a carta para jogar:");
-        if (view.desejaPedirTruco()) {
-            if (!processarPedidoDeTruco(jogador2, jogador1)) {
-                return; // Pula para a próxima rodada
-            }
-        }
-        Carta carta1 = jogador1.jogarCarta(jogador1.getMao().indexOf(escolherCarta(jogador1.getMao())));
-
-        view.exibirMensagem(jogador2.getNome() + ", escolha a carta para jogar:");
-        if (view.desejaPedirTruco()) {
-            if (!processarPedidoDeTruco(jogador1, jogador2)) {
-                return; // Pula para a próxima rodada
-            }
-        }
-        Carta carta2 = jogador2.jogarCarta(jogador2.getMao().indexOf(escolherCarta(jogador2.getMao())));
+    private void jogarRodada() {
+        Carta carta1 = realizarJogada(jogador1, jogador2);
+        Carta carta2 = realizarJogada(jogador2, jogador1);
 
         view.exibirMensagem(jogador1.getNome() + " jogou: " + carta1);
         view.exibirMensagem(jogador2.getNome() + " jogou: " + carta2);
 
+        processarResultadoRodada(carta1, carta2);
+    }
+
+    private Carta realizarJogada(Jogador jogador, Jogador oponente) {
+        view.exibirMensagem(jogador.getNome() + ", escolha a carta para jogar:");
+        if (view.desejaPedirTruco() && !processarPedidoDeTruco(oponente, jogador)) {
+            return null; // Pula para a próxima rodada
+        }
+        return jogador.jogarCarta(jogador.getMao().indexOf(escolherCarta(jogador.getMao())));
+    }
+
+    private void processarResultadoRodada(Carta carta1, Carta carta2) {
         int resultado = compararCartas(carta1, carta2);
 
         if (resultado > 0) {

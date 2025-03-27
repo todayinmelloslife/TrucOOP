@@ -35,4 +35,9 @@ public class Jogador {
     public String getNome() {
         return nome;
     }
+
+    @Override
+    public String toString() {
+        return "Jogador: " + nome + " | Pontuação: " + pontuacao;
+    }
 }
