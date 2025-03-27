@@ -20,8 +20,8 @@ public class Jogador {
         return mao.remove(indice);
     }
 
-    public void pontuar() {
-        pontuacao++;
+    public void pontuar(int pontos) {
+        pontuacao += pontos;
     }
 
     public List<Carta> getMao() {
@@ -34,10 +34,5 @@ public class Jogador {
 
     public String getNome() {
         return nome;
-    }
-
-    public Carta jogarCarta(Carta escolherCarta) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'jogarCarta'");
     }
 }
