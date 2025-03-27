@@ -58,4 +58,8 @@ public class GameView {
     public void closeScanner() {
         scanner.close();
     }
+
+    public Scanner getScanner() {
+        return scanner;
+    }
 }

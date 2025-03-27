@@ -6,12 +6,35 @@ public class GameController {
     private Jogador jogador2;
     private GameView view;
     private int pontosRodada = 1;
+    private boolean modoFacil;
 
     public GameController(Jogador jogador1, Jogador jogador2, GameView view) {
         this.jogador1 = jogador1;
         this.jogador2 = jogador2;
         this.view = view;
         this.baralho = new Baralho();
+        this.modoFacil = selecionarModoDeJogo();
+    }
+
+    private boolean selecionarModoDeJogo() {
+        view.exibirMensagem("Selecione o modo de jogo:");
+        view.exibirMensagem("1 - Fácil (manilhas visíveis)");
+        view.exibirMensagem("2 - Difícil (manilhas ocultas)");
+
+        int escolha;
+        while (true) {
+            try {
+                view.exibirMensagem("Digite o número do modo: ");
+                escolha = Integer.parseInt(view.getScanner().nextLine()); // Reutiliza o Scanner do GameView
+                if (escolha == 1 || escolha == 2) {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                view.exibirMensagem("Entrada inválida. Digite um número.");
+            }
+            view.exibirMensagem("Escolha inválida. Tente novamente.");
+        }
+        return escolha == 1;
     }
 
     public void iniciarJogo() {
@@ -19,7 +42,9 @@ public class GameController {
         baralho.definirVira();
 
         view.exibirMensagem("A carta virada é: " + baralho.getVira());
-        // Linha removida: view.exibirMensagem("As manilhas são: " + baralho.getManilhas() + "\n");
+        if (modoFacil) {
+            view.exibirMensagem("As manilhas são: " + baralho.getManilhas() + "\n");
+        }
 
         for (int i = 0; i < 3; i++) {
             jogador1.receberCarta(baralho.distribuirCarta());
