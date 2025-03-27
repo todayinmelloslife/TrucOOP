@@ -1,8 +1,3 @@
-import src.model.Jogador;
-import view.GameView;
-import controller.GameController;
-
-
 public class Main {
     public static void main(String[] args) {
         // Criação dos jogadores

@@ -1,5 +1,3 @@
-package src.model.carta;
-
 public class GameView {
 
     public void exibirMensagem(String msg) {

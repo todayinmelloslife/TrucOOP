@@ -1,7 +1,3 @@
-import model.Baralho;
-import model.Carta;
-import model.Jogador;
-import view.GameView;
 
 import java.util.List;
 
