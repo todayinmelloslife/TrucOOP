@@ -46,7 +46,10 @@ public class GameController {
         view.exibirMensagem("Cartas distribuídas!\n");
         mostrarCartasDosJogadores();
 
-        while (!jogador1.getMao().isEmpty() && !jogador2.getMao().isEmpty()) {
+        int rodada = 0;
+        while (!jogador1.getMao().isEmpty() && !jogador2.getMao().isEmpty() && rodada < 12) {
+            rodada++;
+            view.exibirMensagem("Rodada " + rodada + " de 12");
             jogarRodada();
         }
 
@@ -160,15 +163,60 @@ public class GameController {
     }
 
     private boolean processarPedidoDeTruco(Jogador oponente, Jogador quemPediu) {
-        view.exibirMensagem(oponente.getNome() + ", você aceita o truco? (s/n)");
-        if (!view.respostaSimNao()) {
-            view.exibirMensagem(oponente.getNome() + " não aceitou o truco!");
+        pontosRodada = 3; // Truco starts at 3 points
+        view.exibirMensagem(oponente.getNome() + ", escolha uma opção:");
+        view.exibirMensagem("1 - Aceitar o truco");
+        view.exibirMensagem("2 - Pedir 6 pontos");
+        view.exibirMensagem("3 - Recusar");
+
+        int resposta = obterRespostaTruco();
+
+        if (resposta == 3) { // Recusar
+            view.exibirMensagem(oponente.getNome() + " recusou o truco!");
             quemPediu.pontuar(pontosRodada);
             view.exibirMensagem(quemPediu.getNome() + " ganhou " + pontosRodada + " pontos!");
-            return false; // O truco foi recusado, pula para a próxima rodada
+            return false;
+        } else if (resposta == 2) { // Pedir 6
+            return escalarTruco(6, quemPediu, oponente);
+        } else { // Aceitar
+            view.exibirMensagem(oponente.getNome() + " aceitou o truco!");
+            return true;
         }
-        view.exibirMensagem(oponente.getNome() + " aceitou o truco!");
-        pontosRodada = Math.min(pontosRodada + 3, 12); // Incrementa os pontos da rodada
-        return true; // O truco foi aceito
+    }
+
+    private boolean escalarTruco(int novaPontuacao, Jogador quemPediu, Jogador oponente) {
+        pontosRodada = novaPontuacao;
+        view.exibirMensagem(quemPediu.getNome() + ", escolha uma opção:");
+        view.exibirMensagem("1 - Aceitar jogar por " + novaPontuacao + " pontos");
+        view.exibirMensagem("2 - Pedir " + (novaPontuacao + 3) + " pontos");
+        view.exibirMensagem("3 - Recusar");
+
+        int resposta = obterRespostaTruco();
+
+        if (resposta == 3) { // Recusar
+            view.exibirMensagem(quemPediu.getNome() + " recusou jogar por " + novaPontuacao + " pontos!");
+            oponente.pontuar(pontosRodada);
+            view.exibirMensagem(oponente.getNome() + " ganhou " + pontosRodada + " pontos!");
+            return false;
+        } else if (resposta == 2) { // Pedir mais pontos
+            return escalarTruco(novaPontuacao + 3, oponente, quemPediu);
+        } else { // Aceitar
+            view.exibirMensagem(quemPediu.getNome() + " aceitou jogar por " + novaPontuacao + " pontos!");
+            return true;
+        }
+    }
+
+    private int obterRespostaTruco() {
+        while (true) {
+            try {
+                int resposta = Integer.parseInt(view.getScanner().nextLine().trim());
+                if (resposta >= 1 && resposta <= 3) {
+                    return resposta;
+                }
+            } catch (NumberFormatException e) {
+                view.exibirMensagem("Entrada inválida. Digite um número entre 1 e 3.");
+            }
+            view.exibirMensagem("Escolha inválida. Tente novamente.");
+        }
     }
 }
