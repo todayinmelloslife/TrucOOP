@@ -20,7 +20,7 @@
 
 ###
 
-<h6 align="left">Este projeto tem como objetivo desenvolver um jogo de Truco, um tradicional e popular jogo de cartas, utilizando a linguagem de programação Java. A proposta visa aplicar e aprimorar os conhecimentos em orientação a objetos e lógica de programação, colocando em prática conceitos fundamentais aprendidos ao longo do curso. Através deste desenvolvimento, buscamos criar uma aplicação robusta e interativa que simule a dinâmica e os desafios do jogo, proporcionando uma experiência prática e enriquecedora na resolução de problemas reais de programação.<br><br>Projeto desenvolvido por:<br>- Maria Eduarda Mello<br>- Gabriel  Luchtenberg <br>- Igor Justus <br> - </h6>
+<h6 align="left">Este projeto tem como objetivo desenvolver um jogo de Truco, um tradicional e popular jogo de cartas, utilizando a linguagem de programação Java. A proposta visa aplicar e aprimorar os conhecimentos em orientação a objetos e lógica de programação, colocando em prática conceitos fundamentais aprendidos ao longo do curso. Através deste desenvolvimento, buscamos criar uma aplicação robusta e interativa que simule a dinâmica e os desafios do jogo, proporcionando uma experiência prática e enriquecedora na resolução de problemas reais de programação.<br><br>Projeto desenvolvido por:<br>- Maria Eduarda Mello<br>-nome 2 <br>- nome 3 <br> -nome 4 </h6>
 
 <h3 align="left">Funcionalidades:</h3>
 
