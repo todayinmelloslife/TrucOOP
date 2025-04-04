@@ -132,4 +132,9 @@ public class RemoteGameView {
             System.out.println("Erro ao enviar cartas para o jogador: " + e.getMessage());
         }
     }
+
+    public void exibirCartasJogador(Jogador jogador1, List<Carta> mao) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'exibirCartasJogador'");
+    }
 }

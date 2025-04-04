@@ -53,14 +53,14 @@ public class GameController {
         }
         view.enviarCartasParaJogador(jogador1); // Envia cartas para o jogador 1
         view.enviarCartasParaJogador(jogador2); // Envia cartas para o jogador 2
-    }
+        }
 
-    private void mostrarCartasDosJogadores() {
-        view.enviarCartasParaJogador(jogador1); // Envia cartas apenas para o jogador 1
-        view.enviarCartasParaJogador(jogador2); // Envia cartas apenas para o jogador 2
-    }
+        private void mostrarCartasDosJogadores() {
+        view.exibirCartasJogador(jogador1, jogador1.getMao()); // Mostra cartas apenas para o jogador 1
+        view.exibirCartasJogador(jogador2, jogador2.getMao()); // Mostra cartas apenas para o jogador 2
+        }
 
-    private void jogarRodada() {
+        private void jogarRodada() {
         Carta carta1 = realizarJogada(jogador1, jogador2);
         Carta carta2 = realizarJogada(jogador2, jogador1);
 
@@ -68,9 +68,9 @@ public class GameController {
         view.exibirMensagem(jogador2.getNome() + " jogou: " + carta2);
 
         processarResultadoRodada(carta1, carta2);
-    }
+        }
 
-    private Carta realizarJogada(Jogador jogador, Jogador oponente) {
+        private Carta realizarJogada(Jogador jogador, Jogador oponente) {
         view.exibirMensagem(jogador.getNome() + ", escolha a carta para jogar:");
         if (view.desejaPedirTruco() && !processarPedidoDeTruco(oponente, jogador)) {
             return null; // Pula para a próxima rodada
@@ -195,7 +195,8 @@ public class GameController {
     }
 
     private String lerLinha() {
-        java.util.Scanner scanner = new java.util.Scanner(System.in);
-        return scanner.nextLine();
+        try (java.util.Scanner scanner = new java.util.Scanner(System.in)) {
+            return scanner.nextLine();
+        }
     }
 }
