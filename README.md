@@ -36,10 +36,16 @@
 
 ###
 
-<h6 align="left">Para executar o projeto, siga os passos abaixo:<br><br>1. Clone o repositório:<br>   ```bash<br>   git clone https://github.com/todayinmelloslife/Projeto-Truco.git  <br>  1. Clone o repositório. <br>
-2. Compile o projeto utilizando um compilador Java. <br>
-3. Execute a classe `Main` para iniciar o jogo.</h6>
-
+<h6 align="left">
+Para executar o projeto, siga os passos abaixo:<br><br>
+1. Clone o repositório:<br>
+&nbsp;&nbsp;&nbsp;```bash<br>
+&nbsp;&nbsp;&nbsp;git clone https://github.com/todayinmelloslife/Projeto-Truco.git<br>
+&nbsp;&nbsp;&nbsp;```<br><br>
+2. Compile o projeto utilizando um compilador Java.<br>
+3. Execute a classe <code>MainServidor</code> para iniciar o servidor.<br>
+4. Em seguida, execute a classe <code>MainCliente</code> duas vezes, em terminais diferentes, para iniciar os dois clientes e começar o jogo.
+</h6>
 
 ###
 
