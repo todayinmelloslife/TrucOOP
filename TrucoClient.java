@@ -1,6 +1,7 @@
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
+import java.util.List;
 
 public class TrucoClient {
 
@@ -33,14 +34,12 @@ public class TrucoClient {
                     break;
                 }
 
-                if (msg.toLowerCase().contains("fim das cartas")) {
-                    System.out.println("Iniciando o jogo automaticamente...");
-                    iniciarJogo(scanner, out); // Automatically start the game
+                if (msg.toLowerCase().contains("suas cartas:")) {
+                    System.out.println("Escolha uma carta digitando o número correspondente:");
+                    String escolha = scanner.nextLine();
+                    out.writeObject(escolha);
+                    out.flush();
                     continue;
-                }
-
-                if (msg.toLowerCase().contains("fim") || msg.toLowerCase().contains("encerrado")) {
-                    break;
                 }
 
                 String entrada = scanner.nextLine();
@@ -48,27 +47,18 @@ public class TrucoClient {
                     out.writeObject(entrada);
                     out.flush(); // Garante que os dados sejam enviados imediatamente
                 }
-            } else if (resposta instanceof String[]) {
-                // Recebe as cartas enviadas pelo servidor
-                String[] cartas = (String[]) resposta;
+            } else if (resposta instanceof List) {
+                // Recebe a lista de cartas enviadas pelo servidor
+                List<String> cartas = (List<String>) resposta;
                 System.out.println("Suas cartas:");
-                for (String carta : cartas) {
-                    System.out.println("- " + carta);
+                for (int i = 0; i < cartas.size(); i++) {
+                    System.out.println((i + 1) + " - " + cartas.get(i)); // Lista enumerada
                 }
 
-                // Notifica o servidor que as cartas foram recebidas
-                out.writeObject("cartas recebidas");
+                System.out.println("Escolha uma carta digitando o número correspondente:");
+                String escolha = scanner.nextLine();
+                out.writeObject(escolha);
                 out.flush();
-
-                // Aguarda confirmação do servidor de que ambos os jogadores receberam as cartas
-                Object confirmacao = in.readObject();
-                if (confirmacao instanceof String && ((String) confirmacao).equalsIgnoreCase("cartas distribuídas")) {
-                    System.out.println("As cartas foram distribuídas para ambos os jogadores.");
-                    System.out.println("A carta virada é: " + in.readObject()); // Recebe a carta virada do servidor
-                    System.out.println("\nRodada 1 de 12");
-                    System.out.println("Escolha a carta para jogar:");
-                    iniciarJogo(scanner, out);
-                }
             }
         }
     }

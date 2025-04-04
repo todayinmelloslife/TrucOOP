@@ -36,9 +36,9 @@ public class RemoteGameView {
 
             out.writeObject("Escolha uma carta para jogar:");
             for (int i = 0; i < mao.size(); i++) {
-                out.writeObject((i + 1) + " - " + mao.get(i)); // Show card options
+                out.writeObject((i + 1) + " - " + mao.get(i)); // Lista enumerada
             }
-            out.writeObject("Digite o número da carta (1, 2, ou 3):");
+            out.writeObject("Digite o número da carta:");
 
             int escolha;
             while (true) {
@@ -121,12 +121,23 @@ public class RemoteGameView {
 
     public void enviarCartasParaJogador(Jogador jogador) {
         try {
-            ObjectOutputStream out = jogador.getId() == 1 ? out1 : out2; // Use ID instead of name
-            out.writeObject("Suas cartas:");
-            for (Carta carta : jogador.getMao()) {
-                out.writeObject(carta.toString());
+            ObjectOutputStream out = jogador.getId() == 1 ? out1 : out2; // Use ID to determine the output stream
+            List<Carta> mao = jogador.getMao();
+            StringBuilder cartasFormatadas = new StringBuilder("Suas cartas:\n");
+
+            if (jogador.getId() == 1) {
+                // Envia as 3 primeiras cartas para o jogador 1
+                for (int i = 0; i < Math.min(3, mao.size()); i++) {
+                    cartasFormatadas.append((i + 1)).append(" - ").append(mao.get(i)).append("\n");
+                }
+            } else if (jogador.getId() == 2) {
+                // Envia as 3 últimas cartas para o jogador 2
+                for (int i = Math.max(0, mao.size() - 3); i < mao.size(); i++) {
+                    cartasFormatadas.append((i - (mao.size() - 3) + 1)).append(" - ").append(mao.get(i)).append("\n");
+                }
             }
-            out.writeObject("Fim das cartas."); // Indicate end of card list
+
+            out.writeObject(cartasFormatadas.toString());
             out.flush();
         } catch (IOException e) {
             System.out.println("Erro ao enviar cartas para o jogador: " + e.getMessage());
