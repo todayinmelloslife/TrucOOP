@@ -42,6 +42,19 @@ public class Jogador {
         return id;
     }
 
+    public String escolherCarta(String escolha) {
+        try {
+            int indice = Integer.parseInt(escolha) - 1; // Converte para índice baseado em 0
+            if (indice >= 0 && indice < mao.size()) {
+                return mao.get(indice).toString(); // Retorna a carta escolhida como string
+            } else {
+                return "Escolha inválida.";
+            }
+        } catch (NumberFormatException e) {
+            return "Entrada inválida. Digite um número correspondente à carta.";
+        }
+    }
+
     @Override
     public String toString() {
         return "Jogador: " + nome + " | Pontuação: " + pontuacao;

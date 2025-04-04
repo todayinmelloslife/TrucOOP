@@ -227,4 +227,8 @@ public class GameController {
             view.exibirMensagem("Jogada inválida. Tente novamente.");
         }
     }
+
+    public boolean verificarFimDeJogo() {
+        return jogador1.getMao().isEmpty() && jogador2.getMao().isEmpty(); // Verifica se ambos os jogadores não têm mais cartas
+    }
 }

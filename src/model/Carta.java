@@ -19,4 +19,14 @@ public class Carta {
     public String toString() {
         return valor + " de " + naipe;
     }
+
+    public static String get(int indice) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'get'");
+    }
+
+    public static int size() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'size'");
+    }
 }

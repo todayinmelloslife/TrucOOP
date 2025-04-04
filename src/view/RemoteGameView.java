@@ -24,6 +24,14 @@ public class RemoteGameView {
         }
     }
 
+    public void exibirMensagemNoConsole(String mensagem) {
+        try {
+            System.out.println(mensagem); // Exibe a mensagem no console
+        } catch (Exception e) {
+            System.out.println("Erro ao exibir mensagem: " + e.getMessage());
+        }
+    }
+
     public boolean desejaPedirTruco() {
         String pergunta = "Deseja pedir truco? (s/n)";
         return respostaSimNao(pergunta);
