@@ -149,6 +149,6 @@ public class RemoteGameView {
             out.flush();
         } catch (IOException e) {
             System.out.println("Erro ao enviar cartas para o jogador: " + e.getMessage());
-        }
-    }
+        }
+    }
 }
