@@ -33,6 +33,12 @@ public class TrucoClient {
                     break;
                 }
 
+                if (msg.toLowerCase().contains("fim das cartas")) {
+                    System.out.println("Iniciando o jogo automaticamente...");
+                    iniciarJogo(scanner, out); // Automatically start the game
+                    continue;
+                }
+
                 if (msg.toLowerCase().contains("fim") || msg.toLowerCase().contains("encerrado")) {
                     break;
                 }
@@ -68,7 +74,7 @@ public class TrucoClient {
     }
 
     private static void iniciarJogo(Scanner scanner, ObjectOutputStream out) throws IOException {
-        System.out.println("Faça sua jogada ou digite 'truco' para pedir truco:");
+        System.out.println("Faça sua jogada. Digite '1', '2', ou '3' para escolher uma carta ou 'truco' para pedir truco:");
         while (true) {
             String jogada = scanner.nextLine();
             if (jogada != null && !jogada.trim().isEmpty()) {

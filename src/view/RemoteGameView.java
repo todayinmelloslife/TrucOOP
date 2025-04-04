@@ -36,9 +36,9 @@ public class RemoteGameView {
 
             out.writeObject("Escolha uma carta para jogar:");
             for (int i = 0; i < mao.size(); i++) {
-                out.writeObject((i + 1) + " - " + mao.get(i));
+                out.writeObject((i + 1) + " - " + mao.get(i)); // Show card options
             }
-            out.writeObject("Digite o número da carta:");
+            out.writeObject("Digite o número da carta (1, 2, ou 3):");
 
             int escolha;
             while (true) {

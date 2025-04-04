@@ -42,6 +42,11 @@ public class TrucoServer {
         out1.writeObject("Cartas distribuídas!");
         out2.writeObject("Cartas distribuídas!");
 
+        // Inicia o jogo e garante que o jogador 1 faça a primeira jogada
+        out1.writeObject("Sua vez de jogar. Escolha uma carta para jogar:");
+        String jogada1 = (String) in1.readObject();
+        controller.processarJogada(jogada1, jogador1);
+
         controller.iniciarJogo();
 
         // Wait for clients to acknowledge the end of the game

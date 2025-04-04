@@ -75,8 +75,13 @@ public class GameController {
     }
 
     private void jogarRodada() {
+        view.setJogadorAtual(1); // Jogador 1 começa a rodada
         Carta carta1 = realizarJogada(jogador1, jogador2);
+        if (carta1 == null) return; // Skip if no valid move
+
+        view.setJogadorAtual(2); // Jogador 2 joga em seguida
         Carta carta2 = realizarJogada(jogador2, jogador1);
+        if (carta2 == null) return; // Skip if no valid move
 
         view.exibirMensagem(jogador1.getNome() + " jogou: " + carta1);
         view.exibirMensagem(jogador2.getNome() + " jogou: " + carta2);
@@ -85,13 +90,25 @@ public class GameController {
     }
 
     private Carta realizarJogada(Jogador jogador, Jogador oponente) {
-        view.setJogadorAtual(jogador.getNome().equals(jogador1.getNome()) ? 1 : 2);
-        view.exibirMensagem(jogador.getNome() + ", escolha a carta para jogar:");
-        if (view.desejaPedirTruco() && !processarPedidoDeTruco(oponente, jogador)) {
-            return null; // Skip to the next round
+        view.exibirMensagem(jogador.getNome() + ", escolha a carta para jogar (1, 2, 3) ou digite 'truco' para pedir truco:");
+        while (true) {
+            try {
+                String jogada = view.getScanner().readObject().toString().trim();
+                if (jogada.equalsIgnoreCase("truco")) {
+                    if (!processarPedidoDeTruco(oponente, jogador)) {
+                        return null; // Skip to the next round if truco is refused
+                    }
+                } else {
+                    int indiceCarta = Integer.parseInt(jogada) - 1;
+                    if (indiceCarta >= 0 && indiceCarta < jogador.getMao().size()) {
+                        return jogador.jogarCarta(indiceCarta);
+                    }
+                }
+                view.exibirMensagem("Jogada inválida. Tente novamente.");
+            } catch (Exception e) {
+                view.exibirMensagem("Erro ao processar jogada. Tente novamente.");
+            }
         }
-        Carta cartaEscolhida = escolherCarta(jogador.getMao());
-        return cartaEscolhida != null ? jogador.jogarCarta(jogador.getMao().indexOf(cartaEscolhida)) : null;
     }
 
     private void processarResultadoRodada(Carta carta1, Carta carta2) {
@@ -217,5 +234,15 @@ public class GameController {
     private String lerLinha() {
         java.util.Scanner scanner = new java.util.Scanner(System.in);
         return scanner.nextLine();
+    }
+
+    public void processarJogada(String jogada, Jogador jogador) {
+        try {
+            int indiceCarta = Integer.parseInt(jogada.trim()) - 1;
+            Carta cartaJogada = jogador.jogarCarta(indiceCarta);
+            view.exibirMensagem(jogador.getNome() + " jogou: " + cartaJogada);
+        } catch (Exception e) {
+            view.exibirMensagem("Jogada inválida. Tente novamente.");
+        }
     }
 }
