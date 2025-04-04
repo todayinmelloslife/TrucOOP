@@ -7,7 +7,6 @@ public class RemoteGameView {
     private ObjectInputStream in2;
     private ObjectOutputStream out2;
     private int jogadorAtual = 1;
-
     public RemoteGameView(ObjectInputStream in1, ObjectOutputStream out1,
                           ObjectInputStream in2, ObjectOutputStream out2) {
         this.in1 = in1;
@@ -86,7 +85,7 @@ public class RemoteGameView {
 
     public void mostrarCarta(Carta carta, Jogador jogador) {
         try {
-            ObjectOutputStream out = jogador.getNome().equals("Jogador 1") ? out1 : out2;
+            ObjectOutputStream out = jogador.getId() == 1 ? out1 : out2; // Use ID instead of name
             out.writeObject("Sua carta: " + carta);
             out.flush();
         } catch (IOException e) {
@@ -96,6 +95,7 @@ public class RemoteGameView {
 
     public void setJogadorAtual(int jogador) {
         this.jogadorAtual = jogador;
+        exibirMensagem("Agora é a vez do Jogador " + jogadorAtual);
     }
 
     public void close() {
@@ -111,7 +111,7 @@ public class RemoteGameView {
 
     public void enviarCartaParaCliente(Jogador jogador, Carta carta) {
         try {
-            ObjectOutputStream out = jogador.getNome().equals("Jogador 1") ? out1 : out2;
+            ObjectOutputStream out = jogador.getId() == 1 ? out1 : out2; // Use ID instead of name
             out.writeObject(carta != null ? carta.toString() : null); // Use null to indicate no more cards
             out.flush();
         } catch (IOException e) {
@@ -121,20 +121,15 @@ public class RemoteGameView {
 
     public void enviarCartasParaJogador(Jogador jogador) {
         try {
-            ObjectOutputStream out = jogador.getNome().equals("Jogador 1") ? out1 : out2;
+            ObjectOutputStream out = jogador.getId() == 1 ? out1 : out2; // Use ID instead of name
             out.writeObject("Suas cartas:");
             for (Carta carta : jogador.getMao()) {
                 out.writeObject(carta.toString());
             }
-            out.writeObject("Fim das cartas."); // Mensagem para indicar o fim da lista de cartas
+            out.writeObject("Fim das cartas."); // Indicate end of card list
             out.flush();
         } catch (IOException e) {
             System.out.println("Erro ao enviar cartas para o jogador: " + e.getMessage());
         }
-    }
-
-    public void exibirCartasJogador(Jogador jogador1, List<Carta> mao) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'exibirCartasJogador'");
     }
 }

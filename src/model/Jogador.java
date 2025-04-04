@@ -5,9 +5,11 @@ public class Jogador {
     private String nome;
     private List<Carta> mao;
     private int pontuacao;
+    private int id; // Add ID field
 
-    public Jogador(String nome) {
+    public Jogador(String nome, int id) { // Update constructor
         this.nome = nome;
+        this.id = id;
         this.mao = new ArrayList<>();
         this.pontuacao = 0;
     }
@@ -34,6 +36,10 @@ public class Jogador {
 
     public String getNome() {
         return nome;
+    }
+
+    public int getId() { // Add getter for ID
+        return id;
     }
 
     @Override

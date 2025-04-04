@@ -14,6 +14,8 @@ public class GameController {
         this.time2 = time2;
         this.view = view;
         this.baralho = new Baralho();
+        this.jogador1 = time1.getJogadores().get(0); // Initialize jogador1
+        this.jogador2 = time2.getJogadores().get(0); // Initialize jogador2
     }
 
     public GameController(Jogador jogador1, Jogador jogador2, RemoteGameView view) {
@@ -21,11 +23,14 @@ public class GameController {
         this.jogador2 = jogador2;
         this.view = view;
         this.baralho = new Baralho();
+        this.time1 = new Time("Time 1");
+        this.time2 = new Time("Time 2");
+        this.time1.adicionarJogador(jogador1);
+        this.time2.adicionarJogador(jogador2);
     }
 
-
     public void iniciarJogo() {
-        prepararBaralho();
+        inicializarBaralho();
         view.exibirMensagem("Cartas distribuídas!\n");
         mostrarCartasDosJogadores();
 
@@ -39,14 +44,23 @@ public class GameController {
         exibirResultadoFinal();
     }
 
-    private void prepararBaralho() {
+    public void inicializarBaralho() {
+        baralho.embaralhar();
+        baralho.definirVira();
+    }
+
+    public Baralho getBaralho() {
+        return baralho;
+    }
+
+    void prepararBaralho() {
         baralho.embaralhar();
         baralho.definirVira();
         view.exibirMensagem("A carta virada é: " + baralho.getVira());
         distribuirCartas(); // Ensure cards are distributed immediately after showing the "vira"
     }
 
-    private void distribuirCartas() {
+    void distribuirCartas() {
         for (int i = 0; i < 3; i++) {
             jogador1.receberCarta(baralho.distribuirCarta());
             jogador2.receberCarta(baralho.distribuirCarta());
@@ -71,14 +85,20 @@ public class GameController {
     }
 
     private Carta realizarJogada(Jogador jogador, Jogador oponente) {
+        view.setJogadorAtual(jogador.getNome().equals(jogador1.getNome()) ? 1 : 2);
         view.exibirMensagem(jogador.getNome() + ", escolha a carta para jogar:");
         if (view.desejaPedirTruco() && !processarPedidoDeTruco(oponente, jogador)) {
-            return null; // Pula para a próxima rodada
+            return null; // Skip to the next round
         }
-        return jogador.jogarCarta(jogador.getMao().indexOf(escolherCarta(jogador.getMao())));
+        Carta cartaEscolhida = escolherCarta(jogador.getMao());
+        return cartaEscolhida != null ? jogador.jogarCarta(jogador.getMao().indexOf(cartaEscolhida)) : null;
     }
 
     private void processarResultadoRodada(Carta carta1, Carta carta2) {
+        if (carta1 == null || carta2 == null) {
+            view.exibirMensagem("Rodada encerrada sem jogadas válidas.");
+            return;
+        }
         int resultado = compararCartas(carta1, carta2);
 
         if (resultado > 0) {
@@ -183,14 +203,14 @@ public class GameController {
     private int obterRespostaTruco() {
         while (true) {
             try {
-                int resposta = Integer.parseInt(lerLinha().trim());
-                if (resposta >= 1 && resposta <= 3) {
-                    return resposta;
+                String resposta = view.getScanner().readObject().toString().trim();
+                int respostaInt = Integer.parseInt(resposta);
+                if (respostaInt >= 1 && respostaInt <= 3) {
+                    return respostaInt;
                 }
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
                 view.exibirMensagem("Entrada inválida. Digite um número entre 1 e 3.");
             }
-            view.exibirMensagem("Escolha inválida. Tente novamente.");
         }
     }
 
