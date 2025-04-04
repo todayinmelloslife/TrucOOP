@@ -34,16 +34,10 @@ public class TrucoClient {
                     break;
                 }
 
-                if (msg.toLowerCase().contains("suas cartas:")) {
-                    System.out.println("Escolha uma carta digitando o número correspondente:");
+                if (msg.toLowerCase().contains("escolha uma carta")) {
                     String escolha = scanner.nextLine();
-                    try {
-                        int indice = Integer.parseInt(escolha) - 1; // Converte para índice baseado em 0
-                        System.out.println("Escolha inválida. Tente novamente.");
-                    } catch (NumberFormatException e) {
-                        System.out.println("Entrada inválida. Digite um número correspondente à carta.");
-                    }
-                    out.flush();
+                    out.writeObject(escolha);
+                    out.flush(); // Ensure the choice is sent immediately
                     continue;
                 }
 

@@ -16,38 +16,42 @@ public class TrucoServer {
         ObjectOutputStream out2 = new ObjectOutputStream(socket2.getOutputStream());
         ObjectInputStream in2 = new ObjectInputStream(socket2.getInputStream());
 
-        out1.writeObject("Digite seu nome:");
-        String nome1 = (String) in1.readObject();
+        out1.writeObject("Digite o nome do Jogador 1:");
+        String nomeJogador1 = (String) in1.readObject();
 
-        out2.writeObject("Digite seu nome:");
-        String nome2 = (String) in2.readObject();
+        out2.writeObject("Digite o nome do Jogador 2:");
+        String nomeJogador2 = (String) in2.readObject();
 
-        Jogador jogador1 = new Jogador(nome1, 1); // Assign ID 1
-        Jogador jogador2 = new Jogador(nome2, 2); // Assign ID 2
+        Jogador jogador1 = new Jogador(nomeJogador1, 1);
+        Jogador jogador2 = new Jogador(nomeJogador2, 2);
 
         Time time1 = new Time("Time 1");
         Time time2 = new Time("Time 2");
         time1.adicionarJogador(jogador1);
         time2.adicionarJogador(jogador2);
 
-        RemoteGameView view = new RemoteGameView(in1, out1, in2, out2);
-        GameController controller = new GameController(time1, time2, view);
+        RemoteGameView gameView = new RemoteGameView(in1, out1, in2, out2);
+        GameController gameController = new GameController(time1, time2, gameView);
 
-        // Sincroniza a carta "vira" e distribui cartas diferentes para os jogadores
-        controller.prepararBaralho();
-        out1.writeObject("A carta virada é: " + controller.getBaralho().getVira());
-        out2.writeObject("A carta virada é: " + controller.getBaralho().getVira());
+        gameController.iniciarJogo();
 
-        controller.distribuirCartas(); // Garante que ambos os jogadores recebam cartas diferentes
-        out1.writeObject("Cartas distribuídas!");
-        out2.writeObject("Cartas distribuídas!");
+        while (true) {
+            out1.writeObject("Jogador 1, escolha uma carta digitando o número correspondente:");
+            String escolha1 = (String) in1.readObject();
+            String cartaEscolhida1 = jogador1.escolherCarta(escolha1);
+            out1.writeObject("Jogador 1 escolheu: " + cartaEscolhida1);
 
-        // Inicia o jogo e garante que o jogador 1 faça a primeira jogada
-        out1.writeObject("Sua vez de jogar. Escolha uma carta para jogar:");
-        String jogada1 = (String) in1.readObject();
-        controller.processarJogada(jogada1, jogador1);
+            out2.writeObject("Jogador 2, escolha uma carta digitando o número correspondente:");
+            String escolha2 = (String) in2.readObject();
+            String cartaEscolhida2 = jogador2.escolherCarta(escolha2);
+            out2.writeObject("Jogador 2 escolheu: " + cartaEscolhida2);
 
-        controller.iniciarJogo();
+            if (gameController.verificarFimDeJogo()) {
+                out1.writeObject("Jogo encerrado!");
+                out2.writeObject("Jogo encerrado!");
+                break;
+            }
+        }
 
         // Wait for clients to acknowledge the end of the game
         out1.writeObject("Jogo encerrado. Obrigado por jogar!");
