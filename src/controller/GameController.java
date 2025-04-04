@@ -65,13 +65,28 @@ public class GameController {
             jogador1.receberCarta(baralho.distribuirCarta());
             jogador2.receberCarta(baralho.distribuirCarta());
         }
-        view.enviarCartasParaJogador(jogador1); // Envia cartas para o jogador 1
-        view.enviarCartasParaJogador(jogador2); // Envia cartas para o jogador 2
+
+        // Send cards to player 1
+        List<Carta> maoJogador1 = jogador1.getMao();
+        String[] cartasJogador1 = maoJogador1.stream().map(Carta::toString).toArray(String[]::new);
+        view.enviarCartasParaJogador(jogador1);
+
+        // Send cards to player 2
+        List<Carta> maoJogador2 = jogador2.getMao();
+        String[] cartasJogador2 = maoJogador2.stream().map(Carta::toString).toArray(String[]::new);
+        view.enviarCartasParaJogador(jogador2);
     }
 
     private void mostrarCartasDosJogadores() {
-        view.enviarCartasParaJogador(jogador1); // Envia cartas apenas para o jogador 1
-        view.enviarCartasParaJogador(jogador2); // Envia cartas apenas para o jogador 2
+        // Display cards for player 1
+        List<Carta> maoJogador1 = jogador1.getMao();
+        String[] cartasJogador1 = maoJogador1.stream().map(Carta::toString).toArray(String[]::new);
+        view.enviarCartasParaJogador(jogador1);
+
+        // Display cards for player 2
+        List<Carta> maoJogador2 = jogador2.getMao();
+        String[] cartasJogador2 = maoJogador2.stream().map(Carta::toString).toArray(String[]::new);
+        view.enviarCartasParaJogador(jogador2);
     }
 
     private void jogarRodada() {
@@ -229,6 +244,6 @@ public class GameController {
     }
 
     public boolean verificarFimDeJogo() {
-        return jogador1.getMao().isEmpty() && jogador2.getMao().isEmpty(); // Verifica se ambos os jogadores não têm mais cartas
-    }
+        return jogador1.getMao().isEmpty() && jogador2.getMao().isEmpty(); // Verifica se ambos os jogadores não têm mais cartas
+    }
 }
